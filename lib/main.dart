@@ -29,6 +29,9 @@ class Hompage extends StatefulWidget {
 }
 
 class _State extends State<Hompage> {
+
+  var numberController =TextEditingController();
+  var messageController =TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +41,28 @@ class _State extends State<Hompage> {
       ),
       body: Column(
         children: [
+          TextField(
+            controller: numberController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              labelText: "Enter the mobile number"
+            ),
+          ),
+          SizedBox(height: 5,),
+          TextField(
+            controller: messageController,
+            decoration: InputDecoration(
+                labelText: "Enter the message"
+            ),
+          ),
+          SizedBox(height: 10,),
           Center(
             child: FlatButton(
-                color: Colors.black,
+                color: Colors.blue,
                 onPressed: (){
                   SmsSender sender = SmsSender();
-                  String address = "09056675390";
-                  SmsMessage message = SmsMessage(address, 'Hello flutter!');
+                  String address = numberController.text.trim();
+                  SmsMessage message = SmsMessage(address, messageController.text.trim());
                   message.onStateChanged.listen((state) {
                     if (state == SmsMessageState.Sent) {
                       print("SMS is sent!");
